@@ -1,4 +1,12 @@
+# solution based on disjoint-set
+# the solution has complexity O(N*log(N))
 ﻿def solution(data: str) -> (int, int):
+	pass
+	
+
+# solution based on python structure 'set' 
+# the solution has complexity O(N^2)
+﻿def solution_old(data: str) -> (int, int):
     # read data
     rows = data.split('\n')
     tops_num, edges_num = map(int, rows[0].split())
@@ -38,7 +46,7 @@
 
             # drop trees, which are involved in forming updated_tree, and add updated_tree to forest
             forest = [forest[tree_num] for tree_num in range(len(forest)) if tree_num not in cycle_check_result]
-            forest += [updated_tree]
+            forest.append(updated_tree)
 
         edges_used_num += 1
         sum_weight += edge[2]
