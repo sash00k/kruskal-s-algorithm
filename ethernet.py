@@ -1,7 +1,36 @@
+from structures import DisjointSet
+
+
 # solution based on disjoint-set
 # the solution has complexity O(N*log(N))
-﻿def solution(data: str) -> (int, int):
-	pass
+def solution(data: str) -> (int, int):
+    # read data
+    rows = data.split('\n')
+    tops_num, edges_num = map(int, rows[0].split())
+
+    # tree initializing
+    forest = DisjointSet(list(range(tops_num)))
+
+    # list of lists [one_top, another_top, edge_weight] sorted by edge_weight ('if row' for last empty line in file)
+    edges_sorted = sorted([list(map(int, row.split())) for row in rows[1:] if row], key=lambda item: item[2])
+
+    edges_used_num = 0
+    sum_weight = 0
+
+    # add edge with minimal weight to the forest if it doesn't produce cycle
+    for edge in edges_sorted:
+        key1 = forest.find_key(elem=edge[0])
+        key2 = forest.find_key(elem=edge[1])
+
+        if key1 != key2:
+            forest.union(key1, key2)
+            edges_used_num += 1
+            sum_weight += edge[2]
+
+    # one tree has edges_num = tops_num - 1, so we may count trees in forest this way
+    trees_num = tops_num - edges_used_num
+
+    return trees_num, sum_weight
 	
 
 # solution based on python structure 'set' 
